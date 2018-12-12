@@ -1,0 +1,1 @@
+File exists so git will track the Bin folder.
