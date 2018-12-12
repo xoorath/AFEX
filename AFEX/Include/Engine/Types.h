@@ -1,9 +1,10 @@
 #pragma once
 #include <Engine/Log.h>
 
-#include <limits>
 #include <string>
 #include <type_traits>
+
+#include <Engine/TypesInternal.h>
 
 namespace afex {
 typedef signed char           i8;
@@ -30,44 +31,10 @@ typedef u32                  uptr;
 
 typedef ::std::string        string;
 
-namespace internal {
-	template<typename To_t, typename From_t, bool toIsSigned, bool fromIsSigned>
-	struct NumericChecker {
-		static inline void CheckValue(From_t num) { }
-	};
-
-	template<typename To_t, typename From_t>
-	struct NumericChecker<To_t, From_t, false, false> {
-		static inline void CheckValue(From_t num) {
-			AFEX_ASSERT_TRUE(num >= ::std::numeric_limits<To_t>::min() && num <= ::std::numeric_limits<To_t>::max());
-		}
-	};
-
-	template<typename To_t, typename From_t>
-	struct NumericChecker<To_t, From_t, true, true> {
-		static inline void CheckValue(From_t num) {
-			AFEX_ASSERT_TRUE(num >= ::std::numeric_limits<To_t>::min() && num <= ::std::numeric_limits<To_t>::max());
-		}
-	};
-
-	template<typename To_t, typename From_t>
-	struct NumericChecker<To_t, From_t, true, false> {
-		static inline void CheckValue(From_t num) {
-			AFEX_ASSERT_TRUE(num <= static_cast<typename ::std::make_unsigned<To_t>::type>(::std::numeric_limits<To_t>::max()));
-		}
-	};
-
-	template<typename To_t, typename From_t>
-	struct NumericChecker<To_t, From_t, false, true> {
-		static inline void CheckValue(From_t num) {
-			AFEX_ASSERT_TRUE(num >= 0 && num <= static_cast<typename ::std::make_unsigned<From_t>::type>(num) <= ::std::numeric_limits<To_t>::max());
-		}
-	};
-}
 template<
 	typename To_t,
 	typename From_t, 
-	typename = ::std::enable_if<::std::is_arithmetic<From_t>::value && ::std::is_arithmetic<To_t>::value>>
+	typename = ::std::enable_if_t<::std::is_arithmetic<From_t>::value && ::std::is_arithmetic<To_t>::value>>
 inline To_t numeric_cast(From_t num) {
 	::afex::internal::NumericChecker<
 		::std::remove_cv<To_t>::type,
@@ -75,5 +42,18 @@ inline To_t numeric_cast(From_t num) {
 		::std::numeric_limits<To_t>::is_signed,
 		::std::numeric_limits<From_t>::is_signed>::CheckValue(num);
 	return static_cast<To_t>(num);
+}
+
+template<
+	typename To_t,
+	typename From_t,
+	typename = ::std::enable_if_t<::std::is_pod<To_t>::value && ::std::is_pod<From_t>::value>>
+inline To_t pun_cast(From_t num) {
+	union {
+		::std::remove_cv<From_t>::type asFrom;
+		To_t asTo;
+	};
+	asFrom = num;
+	return asTo;
 }
 }

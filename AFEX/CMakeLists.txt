@@ -15,7 +15,6 @@ file(GLOB_RECURSE AFEX_LIB_PRIVATE_SRC
 
 file(GLOB_RECURSE AFEX_LIB_THIRDPARTY_SRC
     "ThirdParty/easyloggingpp/easylogging++.cc"
-    "ThirdParty/json/json.cpp"
 )
 
 add_definitions(-DELPP_NO_DEFAULT_LOG_FILE)
