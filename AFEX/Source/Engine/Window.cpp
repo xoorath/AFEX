@@ -38,7 +38,7 @@ struct WindowImpl {
 	}
 
 	void SetWidth(u32 width) {
-		if (m_GlfwWindow == nullptr) return 0;
+		if (m_GlfwWindow == nullptr) return;
 		int oldWidth, oldHeight;
 		glfwGetWindowSize(m_GlfwWindow, &oldWidth, &oldHeight);
 		glfwSetWindowSize(m_GlfwWindow, width, oldHeight);
@@ -52,7 +52,7 @@ struct WindowImpl {
 	}
 
 	void SetHeight(u32 height) {
-		if (m_GlfwWindow == nullptr) return 0;
+		if (m_GlfwWindow == nullptr) return;
 		int oldWidth, oldHeight;
 		glfwGetWindowSize(m_GlfwWindow, &oldWidth, &oldHeight);
 		glfwSetWindowSize(m_GlfwWindow, oldWidth, height);

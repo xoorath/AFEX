@@ -59,7 +59,7 @@ namespace internal {
 	template<typename To_t, typename From_t>
 	struct NumericChecker<To_t, From_t, false, true> {
 		static inline void CheckValue(From_t num) {
-			assert(num >= 0 && num <= static_cast<typename ::std::make_unsigned<From_t>::type>(from) <= ::std::numeric_limits<To_t>::max());
+			assert(num >= 0 && num <= static_cast<typename ::std::make_unsigned<From_t>::type>(num) <= ::std::numeric_limits<To_t>::max());
 		}
 	};
 }
