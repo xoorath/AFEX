@@ -1,4 +1,6 @@
 #include <Engine/Window.h>
+#include <Engine/DebugUI.h>
+
 #include <Windows.h>
 
 #include <GLFW/glfw3.h>
@@ -9,6 +11,9 @@ bool glfwInitialized = false;
 struct WindowImpl {
 	GLFWwindow* m_GlfwWindow;
 	string windowTitle;
+	~WindowImpl() {
+		::afex::debugui::Shutdown();
+	}
 	bool Init(u32 width, u32 height, string const& title) {
 		windowTitle = title;
 		m_GlfwWindow = glfwCreateWindow(numeric_cast<int>(width), numeric_cast<int>(height), windowTitle.c_str(), nullptr, nullptr);
@@ -16,11 +21,13 @@ struct WindowImpl {
 			return false;
 		}
 		glfwMakeContextCurrent(m_GlfwWindow);
+		::afex::debugui::Init(m_GlfwWindow);
 		return true;
 	}
 
 	bool Update() {
 		glClear(GL_COLOR_BUFFER_BIT);
+		::afex::debugui::Update();
 		glfwSwapBuffers(m_GlfwWindow);
 		glfwPollEvents();
 		return false == glfwWindowShouldClose(m_GlfwWindow);
