@@ -1,16 +1,21 @@
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <GLFW/glfw3.h>
 #include <Engine/Window.h>
-#include <iostream>
+#include <Engine/Log.h>
+#include <Engine/Settings.h>
 
-INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow)
-{
-	afex::Window* window = afex::Window::Create(1280, 720, "test");
+#include <Windows.h>
+
+INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow) {
+	::afex::log::Init();
+	::afex::settings::Load();
+
+	afex::Window* window = afex::Window::Create(
+		::afex::settings::window::GetWidth(), 
+		::afex::settings::window::GetHeight(), 
+		::afex::settings::window::GetTitle());
 	while (window->Update()) {
-		// do things
+		
 	}
+	::afex::settings::Save();
 	delete window;
     return 0;
 }

@@ -1,5 +1,6 @@
 #pragma once
-#include <assert.h>
+#include <Engine/Log.h>
+
 #include <limits>
 #include <string>
 #include <type_traits>
@@ -38,28 +39,28 @@ namespace internal {
 	template<typename To_t, typename From_t>
 	struct NumericChecker<To_t, From_t, false, false> {
 		static inline void CheckValue(From_t num) {
-			assert(num >= ::std::numeric_limits<To_t>::min() && num <= ::std::numeric_limits<To_t>::max());
+			AFEX_ASSERT_TRUE(num >= ::std::numeric_limits<To_t>::min() && num <= ::std::numeric_limits<To_t>::max());
 		}
 	};
 
 	template<typename To_t, typename From_t>
 	struct NumericChecker<To_t, From_t, true, true> {
 		static inline void CheckValue(From_t num) {
-			assert(num >= ::std::numeric_limits<To_t>::min() && num <= ::std::numeric_limits<To_t>::max());
+			AFEX_ASSERT_TRUE(num >= ::std::numeric_limits<To_t>::min() && num <= ::std::numeric_limits<To_t>::max());
 		}
 	};
 
 	template<typename To_t, typename From_t>
 	struct NumericChecker<To_t, From_t, true, false> {
 		static inline void CheckValue(From_t num) {
-			assert(num <= static_cast<typename ::std::make_unsigned<To_t>::type>(::std::numeric_limits<To_t>::max()));
+			AFEX_ASSERT_TRUE(num <= static_cast<typename ::std::make_unsigned<To_t>::type>(::std::numeric_limits<To_t>::max()));
 		}
 	};
 
 	template<typename To_t, typename From_t>
 	struct NumericChecker<To_t, From_t, false, true> {
 		static inline void CheckValue(From_t num) {
-			assert(num >= 0 && num <= static_cast<typename ::std::make_unsigned<From_t>::type>(num) <= ::std::numeric_limits<To_t>::max());
+			AFEX_ASSERT_TRUE(num >= 0 && num <= static_cast<typename ::std::make_unsigned<From_t>::type>(num) <= ::std::numeric_limits<To_t>::max());
 		}
 	};
 }

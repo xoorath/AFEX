@@ -14,3 +14,4 @@
 # Ignore cmake files, but not the placeholder.
 Bin/*
 !Bin/placeholder.txt
+Assets/logs/my.log
