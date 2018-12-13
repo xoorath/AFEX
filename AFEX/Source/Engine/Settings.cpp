@@ -3,16 +3,10 @@
 #include <fstream>
 #include <iomanip>
 
+afex::Settings settings;
 namespace afex {
-namespace settings {
-using nlohmann::json;
 
-struct Settings {
-	struct {
-		string title;
-		u32 width, height;
-	} Window;
-};
+using nlohmann::json;
 
 void to_json(json& j, const Settings& s) {
 	j = json 
@@ -40,48 +34,20 @@ void from_json(const json& j, Settings& s) {
 	windowSettings.at("height").get_to(s.Window.height);
 }
 
-Settings g_Settings;
-
-void Load() {
+void Settings::Load() {
 	::std::ifstream fs("./app-config.json");
 	if (fs.is_open()) {
 		json doc;
 		fs >> doc;
-		g_Settings = doc.get<Settings>();
+		*this = doc.get<Settings>();
 	}
 }
-void Save() {
+void Settings::Save() {
 	::std::ofstream fs("./app-config.json");
 	if (fs.is_open()) {
-		json doc = g_Settings;
+		json doc = *this;
 		fs << ::std::setw(4) << doc;
 	}
-}
-namespace window {
-string GetTitle() {
-	return g_Settings.Window.title;
-}
-
-u32 GetWidth() {
-	return g_Settings.Window.width;
-}
-
-u32 GetHeight() {
-	return g_Settings.Window.height;
-}
-
-void SetTitle(string title) {
-	g_Settings.Window.title = title;
-}
-
-void SetWidth(u32 width) {
-	g_Settings.Window.width = width;
-}
-
-void SetHeight(u32 height) {
-	g_Settings.Window.height = height;
-}
-}
 }
 
 }

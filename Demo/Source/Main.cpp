@@ -7,16 +7,14 @@
 
 INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow) {
 	::afex::log::Init();
-	::afex::settings::Load();
+	::afex::g_Settings.Load();
 
-	afex::Window* window = afex::Window::Create(
-		::afex::settings::window::GetWidth(), 
-		::afex::settings::window::GetHeight(), 
-		::afex::settings::window::GetTitle());
+	auto const& windowSettings = ::afex::g_Settings.Window;
+	afex::Window* window = afex::Window::Create(windowSettings.width, windowSettings.height, windowSettings.title);
 	
 	while (window->Update()) {
 	}
-	::afex::settings::Save();
+	::afex::g_Settings.Save();
 	delete window;
     return 0;
 }
