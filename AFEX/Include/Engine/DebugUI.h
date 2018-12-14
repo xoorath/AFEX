@@ -1,11 +1,14 @@
 #pragma once
 
-struct GLFWwindow;
-
 namespace afex {
-namespace debugui {
-void Init(GLFWwindow* window);
-void Update();
-void Shutdown();
-}
+class Window;
+class DebugUI {
+	static DebugUI* Create(::afex::Window* window);
+	~DebugUI();
+
+	void Update();
+private:
+	DebugUI() = default;
+	void* m_Pimpl;
+};
 }

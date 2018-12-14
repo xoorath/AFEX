@@ -1,5 +1,5 @@
 #include <Engine/DebugUI.h>
-
+#include <Engine/Window.h>
 
 #define NK_INCLUDE_STANDARD_IO
 #define NUKLEARBASE_USER_HANDLED_INPUT
@@ -79,38 +79,54 @@ static void nuklearbase_userDefinedFonts(struct nk_font* fontArray[], struct nk_
 #endif
 
 namespace afex {
-namespace debugui {
-struct TestData testData = { 0 };
-struct nuklearbase_state* testState;
-void Init(struct ::GLFWwindow* window) {
-	testState = (struct nuklearbase_state*)calloc(1, sizeof(struct nuklearbase_state));
-	testState->windowName = "Test Thing";
-	testState->inputMode = USER_GETS_INPUT;
+namespace internal {
+class DebugUIImpl {
+public:
+	DebugUIImpl(::afex::Window* window) {
+		m_Window = window;
+		m_State.inputMode = USER_GETS_INPUT;
+		nk_textedit_init_default(&m_EditBuffer);
 
-	
-	nk_textedit_init_default(&testData.buffer);
+		m_State.windowWidthInPixels = m_Window->GetWidth();
+		m_State.windowHeightInPixels = m_Window->GetHeight();
 
-	testState->windowWidthInPixels = 800;
-	testState->windowHeightInPixels = 600;
-
-	nuklearbase_initialize(testState, window, &testData);
-
-//	while (!glfwWindowShouldClose(testState->glfwWindowContext))
-	{
-		
+		nuklearbase_initialize(&m_State, m_Window->GetGLFWWindow(), this);
 	}
-	//(testState);
-	//free(testState);
+
+	~DebugUIImpl() {
+		nuklearbase_terminate(&m_State);
+	}
+
+	void Update() {
+		nuklearbase_userDefinedRedrawing(&m_State, this);
+	}
+
+private:
+	::afex::Window* m_Window;
+	nuklearbase_state m_State;
+	// ui data
+	nk_text_edit m_EditBuffer;
+	int m_ButtonPress;
+};
 }
 
-void Update() {
-	nuklearbase_userDefinedRedrawing(testState, &testData);
+#define DEBUGUI_IMPL(x) reinterpret_cast<::afex::internal::DebugUIImpl*>(x->m_Pimpl)
+
+DebugUI* DebugUI::Create(::afex::Window* window) {
+	DebugUI* ui = new DebugUI();
+	ui->m_Pimpl = (void*)new internal::DebugUIImpl(window);
 }
 
-void Shutdown() {
-	nuklearbase_terminate(testState);
-	free(testState);
+DebugUI::~DebugUI() {
+	if (m_Pimpl) {
+		delete DEBUGUI_IMPL(this);
+		m_Pimpl = nullptr;
+	}
 }
 
+void DebugUI::Update() {
+	DEBUGUI_IMPL(this)->Update();
 }
+
+#undef DEBUGUI_IMPL
 }

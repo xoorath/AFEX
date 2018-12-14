@@ -8,7 +8,7 @@ namespace afex {
 namespace internal {
 
 bool glfwInitialized = false;
-struct WindowImpl {
+class WindowImpl {
 	GLFWwindow* m_GlfwWindow;
 	string windowTitle;
 	~WindowImpl() {
@@ -31,6 +31,10 @@ struct WindowImpl {
 		glfwSwapBuffers(m_GlfwWindow);
 		glfwPollEvents();
 		return false == glfwWindowShouldClose(m_GlfwWindow);
+	}
+
+	GLFWwindow* GetGLFWWindow() const {
+		return m_GlfwWindow;
 	}
 
 	u32 GetWidth() const {
@@ -73,7 +77,7 @@ struct WindowImpl {
 
 }
 
-#define WINDOW_IMPL(x) reinterpret_cast<internal::WindowImpl*>(x->pimpl)
+#define WINDOW_IMPL(x) reinterpret_cast<::afex::internal::WindowImpl*>(x->m_Pimpl)
 
 // static
 Window* Window::Create(u32 width, u32 height, string const& title) {
@@ -83,7 +87,7 @@ Window* Window::Create(u32 width, u32 height, string const& title) {
 		}
 	}
 	Window* w = new Window();
-	w->pimpl = new internal::WindowImpl();
+	w->m_Pimpl = new internal::WindowImpl();
 	if (false == WINDOW_IMPL(w)->Init(width, height, title)) {
 		delete w;
 		return nullptr;
@@ -92,14 +96,18 @@ Window* Window::Create(u32 width, u32 height, string const& title) {
 }
 
 Window::~Window() {
-	if (pimpl) {
+	if (m_Pimpl) {
 		delete WINDOW_IMPL(this);
-		pimpl = nullptr;
+		m_Pimpl = nullptr;
 		if (internal::glfwInitialized) {
 			glfwTerminate();
 			internal::glfwInitialized = false;
 		}
 	}
+}
+
+GLFWwindow* Window::GetGLFWWindow() const {
+	return WINDOW_IMPL(this)->GetGLFWWindow();
 }
 
 u32 Window::GetWidth() const {

@@ -2,10 +2,13 @@
 
 #include <Engine/Types.h>
 
+class GLFWwindow;
 namespace afex {
-struct Window {
+class Window {
 public:
 	static Window * Create(u32 width, u32 height, string const& title);
+
+	GLFWwindow* GetGLFWWindow() const;
 
 	u32 GetWidth() const;
 	void SetWidth(u32 width);
@@ -22,6 +25,6 @@ public:
 	~Window();
 private:
 	Window() = default;
-	void* pimpl;
+	void* m_Pimpl;
 };
 }
