@@ -3,6 +3,7 @@
 #include <Engine/Types.h>
 
 class GLFWwindow;
+
 namespace afex {
 class Window {
 public:

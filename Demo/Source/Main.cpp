@@ -10,7 +10,7 @@ INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLin
 	::afex::g_Settings.Load();
 
 	auto const& windowSettings = ::afex::g_Settings.Window;
-	afex::Window* window = afex::Window::Create(windowSettings.width, windowSettings.height, windowSettings.title);
+	::afex::Window* window = ::afex::Window::Create(windowSettings.width, windowSettings.height, windowSettings.title);
 	
 	while (window->Update()) {
 	}

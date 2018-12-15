@@ -1,4 +1,15 @@
 {
+    "fonts": {
+        "mono": [
+            "IBMPlexMono-Regular.ttf"
+        ],
+        "sans": [
+            "IBMPlexSans-Regular.ttf"
+        ],
+        "serif": [
+            "IBMPlexSerif-Regular.ttf"
+        ]
+    },
     "window": {
         "height": 720,
         "title": "Demo App",

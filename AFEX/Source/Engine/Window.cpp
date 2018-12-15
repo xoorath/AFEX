@@ -9,25 +9,28 @@ namespace internal {
 
 bool glfwInitialized = false;
 class WindowImpl {
+
 	GLFWwindow* m_GlfwWindow;
-	string windowTitle;
+	::afex::DebugUI* m_DebugUI;
+	string m_WindowTitle;
+public:
 	~WindowImpl() {
-		::afex::debugui::Shutdown();
+		delete m_DebugUI;
 	}
-	bool Init(u32 width, u32 height, string const& title) {
-		windowTitle = title;
-		m_GlfwWindow = glfwCreateWindow(numeric_cast<int>(width), numeric_cast<int>(height), windowTitle.c_str(), nullptr, nullptr);
+	bool Init(afex::Window* owner, u32 width, u32 height, string const& title) {
+		m_WindowTitle = title;
+		m_GlfwWindow = glfwCreateWindow(numeric_cast<int>(width), numeric_cast<int>(height), m_WindowTitle.c_str(), nullptr, nullptr);
 		if (nullptr == m_GlfwWindow) {
 			return false;
 		}
 		glfwMakeContextCurrent(m_GlfwWindow);
-		::afex::debugui::Init(m_GlfwWindow);
+		m_DebugUI = ::afex::DebugUI::Create(owner);
 		return true;
 	}
 
 	bool Update() {
 		glClear(GL_COLOR_BUFFER_BIT);
-		::afex::debugui::Update();
+		m_DebugUI->Update();
 		glfwSwapBuffers(m_GlfwWindow);
 		glfwPollEvents();
 		return false == glfwWindowShouldClose(m_GlfwWindow);
@@ -66,12 +69,12 @@ class WindowImpl {
 	}
 
 	string GetTitle() const {
-		return windowTitle;
+		return m_WindowTitle;
 	}
 
 	void SetTitle(string const& title) {
-		windowTitle = title;
-		glfwSetWindowTitle(m_GlfwWindow, windowTitle.c_str());
+		m_WindowTitle = title;
+		glfwSetWindowTitle(m_GlfwWindow, m_WindowTitle.c_str());
 	}
 };
 
@@ -88,7 +91,7 @@ Window* Window::Create(u32 width, u32 height, string const& title) {
 	}
 	Window* w = new Window();
 	w->m_Pimpl = new internal::WindowImpl();
-	if (false == WINDOW_IMPL(w)->Init(width, height, title)) {
+	if (false == WINDOW_IMPL(w)->Init(w, width, height, title)) {
 		delete w;
 		return nullptr;
 	}
