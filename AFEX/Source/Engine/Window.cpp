@@ -2,8 +2,9 @@
 #include <Engine/DebugUI.h>
 
 #include <Windows.h>
-
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 namespace afex {
 namespace internal {
 
@@ -23,7 +24,16 @@ public:
 		if (nullptr == m_GlfwWindow) {
 			return false;
 		}
+		
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwMakeContextCurrent(m_GlfwWindow);
+
+		if (false == gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+			return false;
+		}
+
 		m_DebugUI = ::afex::DebugUI::Create(owner);
 		return true;
 	}
