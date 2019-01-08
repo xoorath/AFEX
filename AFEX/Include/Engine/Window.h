@@ -2,7 +2,7 @@
 
 #include <Engine/Types.h>
 
-class GLFWwindow;
+struct GLFWwindow;
 
 namespace afex {
 class Window {

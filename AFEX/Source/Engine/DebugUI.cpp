@@ -8,8 +8,6 @@
 #define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
 #define NK_INCLUDE_FONT_BAKING
 #define NK_INCLUDE_DEFAULT_FONT
-#define NK_IMPLEMENTATION
-#define NK_GLFW_GL4_IMPLEMENTATION
 #define NK_KEYSTATE_BASED_INPUT
 #include <nuklear/nuklear_glfw_gl4.h>
 
@@ -17,7 +15,6 @@
 
 #define MAX_VERTEX_BUFFER 512 * 1024
 #define MAX_ELEMENT_BUFFER 128 * 1024
-
 
 namespace afex {
 namespace internal {
@@ -106,7 +103,7 @@ public:
 		{
 			struct nk_command_buffer *canvas = nk_window_get_canvas(ctx);
 			struct nk_rect total_space = nk_window_get_content_region(ctx);
-			nk_draw_image(canvas, total_space, &img, nk_white);
+			nk_draw_image(canvas, total_space, &img, { 255,255,255,255 });
 		}
 		nk_end(ctx);
 

@@ -18,3 +18,6 @@ AFEX_CHECK_SIZE(f64, 8);
 
 AFEX_CHECK_SIZE(iptr, sizeof(void*));
 AFEX_CHECK_SIZE(uptr, sizeof(void*));
+
+// prevent warning about not exporting any symbols.
+namespace afex { namespace internal { void TypesDummyFunction() {} } }

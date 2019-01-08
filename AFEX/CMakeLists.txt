@@ -38,6 +38,6 @@ target_include_directories(AFEX_Lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Include)
 
 target_link_libraries(AFEX_Lib glfw ${GLFW_LIBRARIES})
 
-source_group("api"      FILES ${AFEX_LIB_PUBLIC_SRC})
-source_group("internal" FILES ${AFEX_LIB_PRIVATE_SRC})
-source_group("third party" FILES ${AFEX_LIB_THIRDPARTY_SRC} ${GLAD})
+source_group("api" PREFIX "api"  TREE ${CMAKE_CURRENT_SOURCE_DIR}/Include/Engine FILES ${AFEX_LIB_PUBLIC_SRC})
+source_group("internal" PREFIX "internal" TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source/Engine FILES ${AFEX_LIB_PRIVATE_SRC})
+source_group("third party" PREFIX "third party"  TREE ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty FILES ${AFEX_LIB_THIRDPARTY_SRC} ${GLAD})
