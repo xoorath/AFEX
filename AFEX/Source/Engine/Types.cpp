@@ -1,6 +1,7 @@
 #include <Engine/Types.h>
+#include <stdint.h>
 
-#define AFEX_CHECK_SIZE(name, size) static_assert(sizeof(afex:: name) == size, #name " should be " #size " bytes");
+#define AFEX_CHECK_SIZE(name, compareWith) static_assert(sizeof(afex:: name) == compareWith, #name " should be " #compareWith " bytes");
 
 AFEX_CHECK_SIZE(i8, 1);
 AFEX_CHECK_SIZE(u8, 1);
@@ -18,6 +19,9 @@ AFEX_CHECK_SIZE(f64, 8);
 
 AFEX_CHECK_SIZE(iptr, sizeof(void*));
 AFEX_CHECK_SIZE(uptr, sizeof(void*));
+
+AFEX_CHECK_SIZE(isize, sizeof(std::ptrdiff_t));
+AFEX_CHECK_SIZE(usize, sizeof(std::size_t));
 
 // prevent warning about not exporting any symbols.
 namespace afex { namespace internal { void TypesDummyFunction() {} } }

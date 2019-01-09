@@ -24,10 +24,17 @@ typedef double                f64;
 #if _WIN64 || __x86_64__ || __ppc64__
 typedef i64                  iptr;
 typedef u64                  uptr;
+typedef i64                  isize;
+typedef u64                  usize;
 #else
 typedef i32                  iptr;
 typedef u32                  uptr;
+typedef i32                  isize;
+typedef u32                  usize;
 #endif
+
+typedef u32                  hash32;
+typedef u64                  hash64;
 
 typedef ::std::string        string;
 
@@ -56,4 +63,5 @@ inline To_t pun_cast(From_t num) {
 	asFrom = num;
 	return asTo;
 }
+
 }

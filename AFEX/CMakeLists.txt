@@ -30,6 +30,7 @@ set(GLAD "${GLFW_SOURCE_DIR}/deps/glad/glad.h" "${GLFW_SOURCE_DIR}/deps/glad.c")
 
 set(CMAKE_SUPPRESS_REGENERATION true)
 add_library(AFEX_Lib ${AFEX_LIB_PUBLIC_SRC} ${AFEX_LIB_PRIVATE_SRC} ${AFEX_LIB_THIRDPARTY_SRC} ${GLAD})
+target_sources(AFEX_Lib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/Misc/afex.natvis)
 
 target_include_directories(AFEX_Lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/easyloggingpp)
 target_include_directories(AFEX_Lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/json/include)

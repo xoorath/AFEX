@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">  
+    <Type Name="afex::hash::HashName32">
+        <DisplayString>{m_Name} ({m_HashValue, X})</DisplayString>
+        <Expand>
+          <Item Name="Hash (dec)">m_HashValue</Item>
+          <Item Name="Hash (hex)">m_HashValue,X</Item>
+          <Item Name="Name">m_Name</Item>
+        </Expand>
+    </Type>
+    <Type Name="afex::hash::HashName64">
+        <DisplayString>{m_Name} ({m_HashValue, X})</DisplayString>
+        <Expand>
+          <Item Name="Hash (dec)">m_HashValue</Item>
+          <Item Name="Hash (hex)">m_HashValue,X</Item>
+          <Item Name="Name">m_Name</Item>
+        </Expand>
+    </Type>
+</AutoVisualizer>
