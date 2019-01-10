@@ -4,7 +4,7 @@ namespace afex {
 class Window;
 class DebugUI {
 public:
-	static DebugUI* Create(::afex::Window* window);
+	static DebugUI* Create(Window* window);
 	~DebugUI();
 
 	void Update();

@@ -20,7 +20,7 @@ namespace afex {
 namespace internal {
 class DebugUIImpl {
 public:
-	DebugUIImpl(::afex::Window* window) {
+	DebugUIImpl(Window* window) {
 		m_Window = window;
 		
 		ctx = nk_glfw3_init(m_Window->GetGLFWWindow(), NK_GLFW3_INSTALL_CALLBACKS, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
@@ -133,16 +133,16 @@ public:
 		nk_glfw3_render(NK_ANTI_ALIASING_ON);
 	}
 
-	::afex::Window* m_Window;
+	Window* m_Window;
 	struct nk_image img;
 	struct nk_context *ctx;
 	struct nk_colorf bg;
 };
 }
 
-#define DEBUGUI_IMPL(x) reinterpret_cast<::afex::internal::DebugUIImpl*>(x->m_Pimpl)
+#define DEBUGUI_IMPL(x) reinterpret_cast<internal::DebugUIImpl*>(x->m_Pimpl)
 
-DebugUI* DebugUI::Create(::afex::Window* window) {
+DebugUI* DebugUI::Create(Window* window) {
 	DebugUI* ui = new DebugUI();
 	ui->m_Pimpl = (void*)new internal::DebugUIImpl(window);
 	return ui;

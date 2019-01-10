@@ -4,10 +4,12 @@
 #include <iomanip>
 
 
-afex::Settings settings;
 namespace afex {
+Settings settings;
 
 using nlohmann::json;
+using std::ifstream;
+using std::ofstream;
 
 void to_json(json& j, const Settings& s) {
 	j = json 
@@ -53,7 +55,7 @@ void from_json(const json& j, Settings& s) {
 }
 
 void Settings::Load() {
-	::std::ifstream fs("./app-config.json");
+	ifstream fs("./app-config.json");
 	if (fs.is_open()) {
 		json doc;
 		fs >> doc;
@@ -61,10 +63,10 @@ void Settings::Load() {
 	}
 }
 void Settings::Save() {
-	::std::ofstream fs("./app-config.json");
+	ofstream fs("./app-config.json");
 	if (fs.is_open()) {
 		json doc = *this;
-		fs << ::std::setw(4) << doc;
+		fs << std::setw(4) << doc;
 	}
 }
 

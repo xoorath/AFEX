@@ -12,13 +12,13 @@ bool glfwInitialized = false;
 class WindowImpl {
 
 	GLFWwindow* m_GlfwWindow;
-	::afex::DebugUI* m_DebugUI;
+	DebugUI* m_DebugUI;
 	string m_WindowTitle;
 public:
 	~WindowImpl() {
 		delete m_DebugUI;
 	}
-	bool Init(afex::Window* owner, u32 width, u32 height, string const& title) {
+	bool Init(Window* owner, u32 width, u32 height, string const& title) {
 		m_WindowTitle = title;
 		m_GlfwWindow = glfwCreateWindow(numeric_cast<int>(width), numeric_cast<int>(height), m_WindowTitle.c_str(), nullptr, nullptr);
 		if (nullptr == m_GlfwWindow) {
@@ -34,7 +34,7 @@ public:
 			return false;
 		}
 
-		m_DebugUI = ::afex::DebugUI::Create(owner);
+		m_DebugUI = DebugUI::Create(owner);
 		return true;
 	}
 
@@ -90,7 +90,7 @@ public:
 
 }
 
-#define WINDOW_IMPL(x) reinterpret_cast<::afex::internal::WindowImpl*>(x->m_Pimpl)
+#define WINDOW_IMPL(x) reinterpret_cast<internal::WindowImpl*>(x->m_Pimpl)
 
 // static
 Window* Window::Create(u32 width, u32 height, string const& title) {
