@@ -19,4 +19,10 @@ constexpr u64 operator""_TiB(u64 amount) {
 	return amount * 1024ULL * 1024ULL * 1024ULL * 1024ULL;
 }
 
+constexpr u64 operator""_PiB(u64 amount) {
+	return amount * 1024ULL * 1024ULL * 1024ULL * 1024ULL * 1024ULL;
+}
+
+void BytesToReadableString(char* textBuffer, usize textBufferSize, u64 byteCount);
+
 }

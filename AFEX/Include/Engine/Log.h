@@ -5,7 +5,7 @@
 #define AFEX_ASSERT_TRUE(cnd) if(false == !!(cnd)) { LOG(ERROR) << #cnd ; __debugbreak(); }
 #define AFEX_ASSERT_FALSE(cnd) if(true == !!(cnd)) { LOG(ERROR) << #cnd ; __debugbreak(); }
 #define AFEX_ENSURE_TRUE(cnd) afex::log::LogIf(false == !!(cnd), true, "Condition failed: %v", #cnd)
-#define AFEX_ENSURE_FALSE(cnd) afex::log::LogIf(true == !!(cnd), true, "Condition failed: %v", #cnd)
+#define AFEX_ENSURE_FALSE(cnd) !afex::log::LogIf(true == !!(cnd), true, "Condition failed: %v", #cnd)
 
 namespace afex {
 namespace log {

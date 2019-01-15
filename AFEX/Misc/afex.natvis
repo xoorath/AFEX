@@ -16,4 +16,12 @@
           <Item Name="Name">m_Name</Item>
         </Expand>
     </Type>
+    <Type Name="afex::assets::FontAsset">
+        <DisplayString>{m_FontHashName} {m_LoadState}</DisplayString>
+        <Expand>
+          <Item Name="Hash Name">m_FontHashName</Item>
+          <Item Name="Load State">m_LoadState</Item>
+          <Item Name="nk_font">m_NkFont</Item>
+        </Expand>
+    </Type>
 </AutoVisualizer>

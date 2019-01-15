@@ -3,6 +3,7 @@
 
 #define AFEX_CHECK_SIZE(name, compareWith) static_assert(sizeof(afex:: name) == compareWith, #name " should be " #compareWith " bytes");
 
+AFEX_CHECK_SIZE(byte, 1);
 AFEX_CHECK_SIZE(i8, 1);
 AFEX_CHECK_SIZE(u8, 1);
 

@@ -7,14 +7,15 @@ namespace assets {
 
 class Asset {
 public:
-	virtual hash::HashName32 const& GetAssetTypeHashName() = 0;
-	virtual hash::HashName32 const& GetAssetHashName() = 0;
+	virtual ~Asset() {}
+	virtual hash::HashName32 const& GetAssetTypeHashName() const = 0;
+	virtual hash::HashName32 const& GetAssetHashName() const = 0;
 
 	// A default asset to use as a placeholder in cases where having an asset fail to load isn't a critical error.
-	virtual Asset* GetDefault() = 0;
+	virtual Asset* GetDefault() const = 0;
 
 	// Returns true if the asset is loaded without critical errors
-	virtual bool Loaded() = 0;
+	virtual bool Loaded() const = 0;
 
 	// Returns this asset if this asset has loaded, otherwise default. 
 	// Note: Check default for null on asset types where the default relies on an asset from disk

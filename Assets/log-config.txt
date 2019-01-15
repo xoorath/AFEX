@@ -2,7 +2,7 @@
 
 * GLOBAL:
    FORMAT               =  "%datetime %msg"
-   FILENAME             =  "logs/my.log"
+   FILENAME             =  "afex.log"
    ENABLED              =  true
    TO_FILE              =  true
    TO_STANDARD_OUTPUT   =  false

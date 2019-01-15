@@ -8,6 +8,14 @@
 
 namespace afex {
 
+struct BlockAllocatorInfo {
+	u32 size;
+	u32 bytesFree;
+	u32 bytesUsed;
+	u32 bytesWasted;
+	u32 blockCount;
+};
+
 template<u32 SIZE>
 class BlockAllocator {
 	static_assert(SIZE < (1 << 31), "BlockAllocator doesn't support being larger than 1^31");
@@ -45,6 +53,29 @@ public:
 		b->Size = SIZE - sizeof(Block);
 	}
 
+	BlockAllocatorInfo ReportInfo() {
+		BlockAllocatorInfo info;
+		info.size = SIZE;
+		info.bytesFree = 0;
+		info.bytesUsed = 0;
+		info.bytesWasted = 0;
+		info.blockCount = 0;
+
+		Block* i = static_cast<Block*>(Begin());
+		Block* e = static_cast<Block*>(End());
+		for (; i < e; i = i->Next()) {
+			info.blockCount++;
+			if (i->Free) {
+				info.bytesFree += i->Size;
+			}
+			else {
+				info.bytesUsed += i->Size;
+			}
+		}
+		info.bytesWasted = info.size - (info.bytesFree + info.bytesUsed);
+		return info;
+	}
+
 private:
 	////////////////////////////////////////////////////////////////////// BlockAllocator Internal
 
@@ -54,7 +85,7 @@ private:
 	void* End() { return static_cast<void*>(static_cast<char*>(m_Buffer) + SIZE); }
 
 	struct Block {
-		bool Free : 1;
+		u32 Free : 1;
 		u32 Size : 31;
 
 		Block* Next() const {
@@ -69,6 +100,8 @@ private:
 		}
 	};
 
+	static_assert(sizeof(BlockAllocator<SIZE>::Block) == 4, "Block isn't 32 bits. Why not?");
+	
 	static void JoinBlocks(Block* b, Block* e, Block* m) {
 		if (m->Free) {
 			Block* n = m->Next();

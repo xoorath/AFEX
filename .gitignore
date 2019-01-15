@@ -15,3 +15,4 @@
 Bin/*
 !Bin/placeholder.txt
 Assets/logs/my.log
+Assets/afex.log

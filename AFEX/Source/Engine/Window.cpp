@@ -33,7 +33,6 @@ public:
 		if (false == gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			return false;
 		}
-
 		m_DebugUI = DebugUI::Create(owner);
 		return true;
 	}

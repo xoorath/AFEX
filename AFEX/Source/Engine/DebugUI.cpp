@@ -1,5 +1,6 @@
 #include <Engine/DebugUI.h>
 #include <Engine/Window.h>
+#include <Engine/Assets/FontAsset.h>
 
 #define NK_INCLUDE_FIXED_TYPES
 #define NK_INCLUDE_STANDARD_IO
@@ -24,20 +25,17 @@ public:
 		m_Window = window;
 		
 		ctx = nk_glfw3_init(m_Window->GetGLFWWindow(), NK_GLFW3_INSTALL_CALLBACKS, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
-		{
-			struct nk_font_atlas *atlas;
-			nk_glfw3_font_stash_begin(&atlas);
-			struct nk_font *droid = nk_font_atlas_add_from_file(atlas, "./fonts/IBM-Plex-Sans/IBMPlexSans-Bold.ttf", 14, 0);
-			/*struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "../../../extra_font/Roboto-Regular.ttf", 14, 0);*/
-			/*struct nk_font *future = nk_font_atlas_add_from_file(atlas, "../../../extra_font/kenvector_future_thin.ttf", 13, 0);*/
-			/*struct nk_font *clean = nk_font_atlas_add_from_file(atlas, "../../../extra_font/ProggyClean.ttf", 12, 0);*/
-			/*struct nk_font *tiny = nk_font_atlas_add_from_file(atlas, "../../../extra_font/ProggyTiny.ttf", 10, 0);*/
-			/*struct nk_font *cousine = nk_font_atlas_add_from_file(atlas, "../../../extra_font/Cousine-Regular.ttf", 13, 0);*/
-			nk_glfw3_font_stash_end();
-			//nk_style_load_all_cursors(ctx, atlas->cursors);
-			nk_style_set_font(ctx, &droid->handle);
-		}
 
+		// Should be done before the debug UI tries to create or use any fonts.
+		assets::FontAsset::BeginAtlas();
+		assets::FontAsset::LoadDefaultFont();
+		assets::FontAsset::EndAtlas();
+
+		assets::FontAsset::BeginAtlas();
+		droidAsset.LoadAsset("Droid", "./fonts/IBM-Plex-Sans/IBMPlexSans-Bold.ttf");
+		assets::FontAsset::EndAtlas();
+
+		nk_style_set_font(ctx, droidAsset.GetNkFontHandle());
 
 
 		/* Create bindless texture.
@@ -49,10 +47,13 @@ public:
 			char pixels[tex_width * tex_height * 4];
 			memset(pixels, 128, sizeof(pixels));
 			tex_index = nk_glfw3_create_texture(pixels, tex_width, tex_height);
+			
 			img = nk_image_id(tex_index);
 		}
 
-		bg.r = 0.10f, bg.g = 0.18f, bg.b = 0.24f, bg.a = 1.0f;
+		bg.r = 0.14f, bg.g = 0.71f, bg.b = 0.44f, bg.a = 1.0f;
+
+		assets::FontAsset::ReportMemoryUsage();
 
 	}
 
@@ -107,16 +108,6 @@ public:
 		}
 		nk_end(ctx);
 
-		/* -------------- EXAMPLES ---------------- */
-#ifdef INCLUDE_CALCULATOR
-		calculator(ctx);
-#endif
-#ifdef INCLUDE_OVERVIEW
-		overview(ctx);
-#endif
-#ifdef INCLUDE_NODE_EDITOR
-		node_editor(ctx);
-#endif
 		/* ----------------------------------------- */
 
 		/* Draw */
@@ -133,6 +124,7 @@ public:
 		nk_glfw3_render(NK_ANTI_ALIASING_ON);
 	}
 
+	assets::FontAsset droidAsset;
 	Window* m_Window;
 	struct nk_image img;
 	struct nk_context *ctx;

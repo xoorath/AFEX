@@ -7,6 +7,7 @@
 #include <Engine/TypesInternal.h>
 
 namespace afex {
+typedef char                  byte;
 typedef signed char           i8;
 typedef unsigned char         u8;
 
