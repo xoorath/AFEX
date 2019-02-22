@@ -10,8 +10,12 @@ struct nk_user_font;
 namespace afex {
 namespace assets {
 
+constexpr u32 FontAssetMemoryBudget = static_cast<u32>(256_KiB);
 class FontAsset : public Asset {
 public:
+	FontAsset();
+	FontAsset(hash::HashName32 const& name, string const& path);
+
 	virtual ~FontAsset(){}
 
 	virtual hash::HashName32 const& GetAssetTypeHashName() const override;
@@ -48,7 +52,7 @@ private:
 	static PreLoadSettings        s_DefaultSettings;
 	static PreLoadSettings*       s_ActiveSettings;
 	static nk_font_atlas*         s_ActiveAtlas;
-	static BlockAllocator<16_MiB> s_FontBuffer;
+	static BlockAllocator<FontAssetMemoryBudget> s_FontBuffer;
 
 	enum class LoadState {
 		NotLoaded,
@@ -56,7 +60,7 @@ private:
 		SuccessfullyLoaded
 	};
 
-	LoadState        m_LoadState = LoadState::NotLoaded;
+	LoadState        m_LoadState;
 	hash::HashName32 m_FontHashName;
 	nk_font*         m_NkFont;
 };

@@ -15,7 +15,7 @@ extern unsigned int DEFAULT_FONT_LEN;
 
 namespace afex {
 namespace assets {
-/*static*/ BlockAllocator<16_MiB> FontAsset::s_FontBuffer;
+/*static*/ BlockAllocator<FontAssetMemoryBudget> FontAsset::s_FontBuffer;
 /*static*/ hash::HashName32 FontAsset::s_FontAssetHashName("FontAsset");
 /*static*/ FontAsset FontAsset::s_DefaultFont;
 /*static*/ nk_font_atlas* FontAsset::s_ActiveAtlas = nullptr;
@@ -23,6 +23,20 @@ namespace assets {
 	s_DefaultSettings.m_Height = 16.f
 };
 /*static*/ FontAsset::PreLoadSettings* FontAsset::s_ActiveSettings = &FontAsset::s_DefaultSettings;
+
+//////////////////////////////////////////////////////////////////////////
+FontAsset::FontAsset() 
+: Asset() 
+, m_LoadState(LoadState::NotLoaded)
+, m_FontHashName()
+, m_NkFont(nullptr) {
+
+}
+
+FontAsset::FontAsset(hash::HashName32 const& name, string const& path)
+: FontAsset() {
+	LoadAsset(name, path);
+}
 
 /*virtual*/ hash::HashName32 const& FontAsset::GetAssetTypeHashName() const /*override*/ {
 	return s_FontAssetHashName;

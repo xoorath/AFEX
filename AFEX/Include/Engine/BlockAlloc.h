@@ -18,7 +18,8 @@ struct BlockAllocatorInfo {
 
 template<u32 SIZE>
 class BlockAllocator {
-	static_assert(SIZE < (1 << 31), "BlockAllocator doesn't support being larger than 1^31");
+	static_assert(SIZE >= 5, "BlockAllocator is too small to hold any allocation");
+	static_assert(SIZE <= (0xffffffff >> 1), "BlockAllocator doesn't support being larger than 31 bits");
 public:
 
 	////////////////////////////////////////////////////////////////////// BlockAllocator API

@@ -5,6 +5,7 @@
 #include <Engine/HashName.h>
 #include <Windows.h>
 
+
 INT APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow) {
 	afex::log::Init();
 	afex::g_Settings.Load();

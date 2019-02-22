@@ -27,6 +27,7 @@ include_directories(ThirdParty/glfw/include)
 include_directories("${GLFW_SOURCE_DIR}/deps")
 set(GLAD "${GLFW_SOURCE_DIR}/deps/glad/glad.h" "${GLFW_SOURCE_DIR}/deps/glad.c")
 
+add_subdirectory(ThirdParty/entt)
 
 set(CMAKE_SUPPRESS_REGENERATION true)
 add_library(AFEX_Lib ${AFEX_LIB_PUBLIC_SRC} ${AFEX_LIB_PRIVATE_SRC} ${AFEX_LIB_THIRDPARTY_SRC} ${GLAD})
@@ -38,6 +39,7 @@ target_include_directories(AFEX_Lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ThirdPart
 target_include_directories(AFEX_Lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Include)
 
 target_link_libraries(AFEX_Lib glfw ${GLFW_LIBRARIES})
+target_link_libraries(AFEX_Lib EnTT ${EnTT})
 
 source_group("api" PREFIX "api"  TREE ${CMAKE_CURRENT_SOURCE_DIR}/Include/Engine FILES ${AFEX_LIB_PUBLIC_SRC})
 source_group("internal" PREFIX "internal" TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source/Engine FILES ${AFEX_LIB_PRIVATE_SRC})
